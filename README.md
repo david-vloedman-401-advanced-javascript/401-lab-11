@@ -1,11 +1,11 @@
-# LAB - 
+# LAB - 11 
 
-## Project Name
+## Authorization
 
-### Author: Student/Group Name
+### Author: David Vloeman
 
 ### Links and Resources
-* [Submission PR](http://xyz.com)
+* [Submission PR](https://github.com/david-vloedman-401-advanced-javascript/401-lab-11/pull/1)
 * [Travis](https://www.travis-ci.com/david-vloedman-401-advanced-javascript/401-lab-11)
 * [Heroku]() //TODO
 
