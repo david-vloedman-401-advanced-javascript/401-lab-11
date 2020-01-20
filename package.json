@@ -18,6 +18,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@david-vloedman/mymongomodel": "^1.0.2",
+    "bcrypt": "^3.0.7",
+    "express": "^4.17.1",
     "jest": "^24.9.0"
   }
 }
