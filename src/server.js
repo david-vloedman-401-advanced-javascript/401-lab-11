@@ -1,25 +1,19 @@
 const express = require('express');
-const base64 = require('base64');
-const bcrypt = require('bcrypt');
-
+const cors = require('cors');
 const server = express();
-
-const PORT = 3000;
-
+const router = require('./route/routes');
 
 
 
+server.use(express.json());
+server.use(express.urlencoded({extended: true}));
 
-function signupHandler(req, res, next){
-  
+server.use(router);
+server.use(cors);
 
 
-
-}
-
-async function signinHandler(req, res, next){
-    
-
-}
-
-server.listen(PORT, ()=> console.log(`Listening on ${3000}`));
+module.exports = {
+  server: server,
+  start: port =>
+    server.listen(port, () => console.log(`Server up on port ${port}`)),
+};
