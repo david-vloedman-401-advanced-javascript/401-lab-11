@@ -6,6 +6,7 @@ const auth = require('../middleware/authMiddleware');
 
 
 router.post('/signup', (req, res, next) => {  
+  
   user.save(req.body)
     .then(rec => {
       const token = user.generateToken(rec);

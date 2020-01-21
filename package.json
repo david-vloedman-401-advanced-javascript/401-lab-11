@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@code-fellows/supergoose": "^1.0.1",
     "@david-vloedman/mymongomodel": "^1.0.2",
     "base-64": "^0.1.0",
     "bcrypt": "^3.0.7",
