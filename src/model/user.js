@@ -8,12 +8,18 @@ const schema = require('./userSchema');
 const SECRET = 'sauce';
 
 
-
+/**
+ * @class
+ */
 class User extends MongoModel {
   constructor(){
     super(schema);
   }
-
+  /**
+   * Saves a user to DB
+   * @param  record 
+   * @return record
+   */
   async save(record){
     
     let {username, password} = record;      
@@ -23,7 +29,12 @@ class User extends MongoModel {
     await this.post(hashed);    
     return record;
   }  
-
+  /**
+   * Validates a password against the DB
+   * @param {*} user 
+   * @param {*} pass 
+   * @returns a record
+   */
   async authenticationBasic(user, pass){
     
     let dbuser = await schema.find({username: user});
@@ -32,7 +43,11 @@ class User extends MongoModel {
     
     return valid? dbuser : Promise.reject();
   }
-
+  /**
+   * Generates a token for a user
+   * @param {*} user 
+   * @return token
+   */
   generateToken(user){
     let token = jwt.sign({ username: user.username }, SECRET);
     return token;
