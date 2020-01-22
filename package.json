@@ -29,6 +29,7 @@
     "jest": "^24.9.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb-memory-server": "^6.2.3",
-    "mongoose": "^5.8.9"
+    "mongoose": "^5.8.9",
+    "superagent": "^5.2.1"
   }
 }

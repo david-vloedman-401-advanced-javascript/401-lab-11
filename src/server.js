@@ -3,10 +3,11 @@ const cors = require('cors');
 const server = express();
 const router = require('./route/routes');
 
-
+server.use(express.static('./public'));
 
 server.use(express.json());
 server.use(express.urlencoded({extended: true}));
+
 
 server.use(router);
 server.use(cors);

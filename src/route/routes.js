@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../model/user');
 const user = new User();
 const auth = require('../middleware/authMiddleware');
+const gitHubAuth = require('../oauth/github');
 
 
 router.post('/signup', (req, res, next) => {  
@@ -30,6 +31,10 @@ router.get('/users', (req, res)=> {
     .catch(err =>{
       res.status(403).send('Could not get user list');
     });
+});
+
+router.get('/oauth', gitHubAuth, (req, res)=>{
+  res.status(200).send(req.token);
 });
 
 
