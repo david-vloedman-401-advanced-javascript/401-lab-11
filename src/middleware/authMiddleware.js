@@ -24,5 +24,5 @@ module.exports = (req, res, next) => {
       req.token = users.generateToken(validUser);
       next();
     })
-    .catch(err => next('Invalid Login'));
+    .catch(err => next('SSInvalid Login'));
 };

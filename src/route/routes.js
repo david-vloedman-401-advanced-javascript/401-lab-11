@@ -4,10 +4,10 @@ const User = require('../model/user');
 const user = new User();
 const auth = require('../middleware/authMiddleware');
 const gitHubAuth = require('../oauth/github');
+const bearerAuth = require('../middleware/bearer-auth-middleware');
 
 
-router.post('/signup', (req, res, next) => {  
-  
+router.post('/signup', (req, res, next) => {    
   user.save(req.body)
     .then(rec => {
       const token = user.generateToken(rec);
@@ -31,6 +31,11 @@ router.get('/users', (req, res)=> {
     .catch(err =>{
       res.status(403).send('Could not get user list');
     });
+});
+
+
+router.get('/secret', bearerAuth, (req, res) => {
+  res.status(200).json(req.user);
 });
 
 router.get('/oauth', gitHubAuth, (req, res)=>{
