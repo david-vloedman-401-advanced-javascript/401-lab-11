@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: middleware/authMiddleware.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,46 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: middleware/authMiddleware.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
+const base64 = require('base-64');
+const User = require('../model/user');
+const users = new User();
 
-    <h3> </h3>
+/**
+ * @param req
+ * @param res
+ * @param next
+ */
+module.exports = (req, res, next) => {
+  if (!req.headers.authorization) {
+    next('Invalid Login');
+    return;
+  }
+  
+  let basic = req.headers.authorization.split(' ').pop();
+  let [user, pass] = base64.decode(basic).split(':');
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+  users
+    .authenticationBasic(user, pass)
+    .then(validUser => {
+      req.token = users.generateToken(validUser);
+      next();
+    })
+    .catch(err => next('Invalid Login'));
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -73,6 +73,6 @@ describe('Auth server routes testing', ()=>{
 
 
 
-describe('Auth router', ()=>{
-
+describe('Testing the GitHub OAuth', ()=>{
+  
 });
