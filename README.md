@@ -25,6 +25,11 @@
 
 * `PORT` - Port Number
 * `MONGODB_URI` - URL to the running mongo instance/db
+* `CLIENT_ID` - Github OAuth ID
+* `CLIENT_SECRET` - Github OAuth Secret
+* `API_SERVER` - `http://localhost:3000/oauth`
+* `TOKEN_SERVER` - `https://github.com/login/oauth/access_token`
+* `REMOTE_API` - `https://api.github.com/user`
 
 #### How to initialize/run your server app (where applicable)
 
