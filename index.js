@@ -12,7 +12,7 @@ mongoose
   .connect(process.env.MONGODB_URI, mongooseOptions)
   .catch(err => console.log(err));
 
-require('./src/server.js').start(process.env.PORT);
+require('./src/app.js').start(process.env.PORT);
 
 
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const {server} = require('../src/server');
+const {server} = require('../src/app');
 const supergoose = require('@code-fellows/supergoose');
 
 const auth = require('../src/middleware/authMiddleware');
@@ -32,7 +32,7 @@ describe('Auth server routes testing', ()=>{
       .post('/signup')
       .send(users.baduser)
       .then(res => {
-        expect(res.status).toBe(403);
+        expect(res.status).toBe(500);
         done();
       });
   });
@@ -43,7 +43,7 @@ describe('Auth server routes testing', ()=>{
     mockRequest.get('/users')
       .then(res => {
         
-        expect(res.body[0].username)
+        expect(res.body.results[0].username)
           .toBe('david');
         done();
       });
@@ -69,7 +69,16 @@ describe('Auth server routes testing', ()=>{
         done();
       });
   });
+
+  it('should return 404 when a non-existent route is hit',(done)=>{
+    mockRequest
+      .get('/bad')
+      .then(res => expect(res.status).toBe(404));
+    done();
+  });
 });
+
+
 
 
 

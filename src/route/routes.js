@@ -1,46 +1,48 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
+
 const User = require('../model/user');
-const user = new User();
 const auth = require('../middleware/authMiddleware');
-const gitHubAuth = require('../oauth/github');
-const bearerAuth = require('../middleware/bearer-auth-middleware');
+const oauth = require('../oauth/github');
+const bearerAuth = require('../middleware/bearerAuthMiddleware');
 
+router.get('/users', (req, res, next) => {
+  User.find({}).then(data => {
+    const output = {
+      count: data.length,
+      results: data,
+    };
+    res.json(output);
+  });
+});
 
-router.post('/signup', (req, res, next) => {    
-  user.save(req.body)
-    .then(rec => {
-      const token = user.generateToken(rec);
-      res.status(200).send(token);
+router.post('/signup', (req, res, next) => {
+  let user = new User(req.body);
+  user
+    .save()
+    .then(user => {
+      req.token = user.generateToken();
+      req.user = user;
+      res.set('token', req.token);
+      res.cookie('auth', req.token);
+      res.send(req.token);
     })
-    .catch(err => res.status(403).send('Error creating user'));
+    .catch(next);
 });
 
-
-router.post('/signin', auth, (req, res) => {
-  res.status(200).send(req.token);
+router.post('/signin', auth, (req, res, next) => {
+  res.cookie('auth', req.token);
+  res.send(req.token);
 });
 
-
-
-router.get('/users', (req, res)=> {
-  user.get()
-    .then(data => {
-      res.status(200).json(data);
-    })
-    .catch(err =>{
-      res.status(403).send('Could not get user list');
-    });
+router.get('/user', bearerAuth, (req, res) => {
+  res.json(req.user);
 });
 
-
-router.get('/secret', bearerAuth, (req, res) => {
-  res.status(200).json(req.user);
+router.get('/oauth', oauth, (req, res) => {
+  res.send(req.token);
 });
-
-router.get('/oauth', gitHubAuth, (req, res)=>{
-  res.status(200).send(req.token);
-});
-
 
 module.exports = router;

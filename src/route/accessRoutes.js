@@ -1,0 +1,56 @@
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+const bearAuth = require('../middleware/bearerAuthMiddleware');
+const acl = require('../middleware/aclMiddleware');
+const Role = require('../model/accessModel');
+
+const capabilities = {
+  admin: ['create', 'read', 'update', 'delete', 'superuser'],
+  editor: ['create', 'read', 'update'],
+  user: ['read'],
+};
+
+router.post('/roles', (req, res, next) => {
+  let saved = [];
+  Object.keys(capabilities).map(role => {
+    let newRecord = new Role({ type: role, capabilities: capabilities[role] });
+    saved.push(newRecord.save());
+  });
+  Promise.all(saved);
+  res.send('Roles Created');
+});
+
+router.get('/public');
+
+router.get('/private', bearAuth, (req, res, next) => {
+  res.send('OK');
+});
+
+router.get('/readonly', bearAuth, acl('read'), (req, res, next) => {
+  res.send('OK');
+});
+
+router.get('/create', bearAuth, acl('create'), (req, res, next) => {
+  res.send('OK');
+});
+
+router.post('/update', bearAuth, acl('update'), (req, res, next) => {
+  res.send('OK');
+});
+
+router.patch('/delete', bearAuth, acl('delete'), (req, res, next) => {
+  res.send('OK');
+});
+
+router.get(
+  '/everything',
+  bearAuth,
+  acl('superuser'),
+  (req, res, next) => {
+    res.send('OK');
+  },
+);
+
+module.exports = router;

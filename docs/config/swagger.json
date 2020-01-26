@@ -10,6 +10,8 @@
       "url": "https://lab11-401.herokuapp.com"
     }
   ],
+
+
   "paths": {
     "/users": {
       "get": {
@@ -26,7 +28,8 @@
             }
           }
         }
-      },
+      }
+    },
  
     "/signin": {
       "post": {
@@ -43,23 +46,28 @@
             }
           }
         }
-      },
-	"/signup": {
-      "post": {
-        "description": "Create a username and password set",
-        "responses": {
-          "200": {
-            "description": "Successfully added credentials to DB",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/getAll"
+      }
+    },
+
+	  "/signup": {
+        "post": {
+          "description": "Create a username and password set",
+          "responses": {
+            "200": {
+              "description": "Successfully added credentials to DB",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/getAll"
+                  }
                 }
               }
             }
           }
         }
-      },
+      }
+    },
+
   "components": {
     "schemas": {
       "getAll": {
@@ -69,3 +77,11 @@
     }
   }
 }
+
+
+
+  
+
+
+
+

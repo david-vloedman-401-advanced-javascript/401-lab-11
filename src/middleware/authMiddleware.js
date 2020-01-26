@@ -1,28 +1,44 @@
 'use strict';
 
-const base64 = require('base-64');
 const User = require('../model/user');
-const users = new User();
 
-/**
- * @param req
- * @param res
- * @param next
- */
 module.exports = (req, res, next) => {
-  if (!req.headers.authorization) {
-    next('Invalid Login');
-    return;
-  }
-  
-  let basic = req.headers.authorization.split(' ').pop();
-  let [user, pass] = base64.decode(basic).split(':');
+  try {
+    let [authType, authString] = req.headers.authorization.split(/\s+/);
 
-  users
-    .authenticationBasic(user, pass)
-    .then(validUser => {
-      req.token = users.generateToken(validUser);
+    switch (authType.toLowerCase()) {
+    case 'basic':
+      return _authBasic(authString);
+    default:
+      return _authError();
+    }
+  } catch (e) {
+    next(e);
+  }
+
+  function _authBasic(str) {
+    // str: am9objpqb2hubnk=
+    let base64Buffer = Buffer.from(str, 'base64'); // <Buffer 01 02 ...>
+    let bufferString = base64Buffer.toString(); // john:mysecret
+    let [username, password] = bufferString.split(':'); // john='john'; mysecret='mysecret']
+    let auth = { username, password }; // { username:'john', password:'mysecret' }
+
+    return User.authenticateBasic(auth)
+      .then(user => _authenticate(user))
+      .catch(next);
+  }
+
+  function _authenticate(user) {
+    if (user) {
+      req.user = user;
+      req.token = user.generateToken();
       next();
-    })
-    .catch(err => next('SSInvalid Login'));
+    } else {
+      _authError();
+    }
+  }
+
+  function _authError() {
+    next('Invalid User ID/Password');
+  }
 };
